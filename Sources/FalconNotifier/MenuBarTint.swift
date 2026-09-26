@@ -51,7 +51,7 @@ final class MenuBarTint: NSObject {
                                width: screen.frame.width, height: height)
             let panel = TintPanel(contentRect: frame, styleMask: [.borderless, .nonactivatingPanel],
                                   backing: .buffered, defer: false)
-            panel.title = "Notifier menu bar tint"
+            panel.title = "falcon-notifier menu bar tint"
             panel.isOpaque = false
             panel.backgroundColor = color.withAlphaComponent(0.32)
             panel.hasShadow = false

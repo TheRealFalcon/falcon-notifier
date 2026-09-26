@@ -1,4 +1,4 @@
-# Notifier
+# falcon-notifier
 
 A small native macOS menu bar app. One compiled Swift executable, AppKit and
 Foundation only, with no third-party dependencies or runtime scripts.
@@ -14,8 +14,8 @@ including child sessions:
 | Gray | Connecting, disconnected, or unable to read status |
 
 Finished sessions waiting for your *next prompt* count as idle/green. Red means
-Codex has an outstanding approval or input request. Colors match `codex-status`'s
-Stream Deck implementation. Click the dot for counts, reconnect, and quit.
+Codex has an outstanding approval or input request. Click the dot for counts,
+reconnect, and quit.
 
 While red or yellow, the entire menu bar also gets a matching translucent tint.
 The tint disappears when green or disconnected. It is click-through and cannot
@@ -32,22 +32,41 @@ current Mac's architecture.
 
 ```sh
 sh scripts/build.sh
-open dist/Notifier.app
+open dist/falcon-notifier.app
 ```
 
-The release app is self-contained; you can copy `dist/Notifier.app` to
+The release app is self-contained; you can copy `dist/falcon-notifier.app` to
 `~/Applications`. For automatic startup, add that copy under System Settings →
 General → Login Items. There is no Dock icon or main window.
 
-By default it observes `ws://127.0.0.1:45999`, so keep starting Codex as usual:
+## Start the Codex server
+
+Requires the Codex CLI with `app-server --listen` and `--remote` support.
+falcon-notifier connects to a separately running server; it doesn't start or stop
+one. By default it observes `ws://127.0.0.1:45999`.
+
+Start the server in a dedicated terminal and leave it running:
+
+```sh
+codex app-server --listen ws://127.0.0.1:45999
+```
+
+In another terminal, switch to your project directory and start a session on that
+server:
+
+```sh
+codex --remote ws://127.0.0.1:45999 --cd "$PWD"
+```
+
+To resume an existing session instead:
 
 ```sh
 codex --remote ws://127.0.0.1:45999 --cd "$PWD" resume
 ```
 
-Your Stream Deck plugin currently starts that server. Notifier connects to it;
-it doesn't start or stop the server. If you stop using the Stream Deck plugin,
-run the same server yourself with `codex app-server --listen ws://127.0.0.1:45999`.
+Keep the server running while using Codex and falcon-notifier. If the server is
+unavailable, the dot is gray and the notifier retries automatically. Adding the
+notifier to Login Items starts only the notifier; start the server separately.
 Sessions on other servers or standalone CLI processes aren't visible here.
 
 To override the endpoint, pass `--server` or set `CODEX_APP_SERVER_URL` in the
@@ -55,14 +74,14 @@ launching process's environment. A Finder launch doesn't inherit your shell's
 environment. For example:
 
 ```sh
-open dist/Notifier.app --args --server ws://127.0.0.1:45999
+open dist/falcon-notifier.app --args --server ws://127.0.0.1:45999
 ```
 
 ## Checks
 
 ```sh
 node scripts/integration-test.mjs
-dist/Notifier.app/Contents/MacOS/Notifier --once
+dist/falcon-notifier.app/Contents/MacOS/falcon-notifier --once
 ```
 
 `--once` prints one JSON status and exits (nonzero when unavailable); `--watch`

@@ -98,7 +98,7 @@ try {
     server.listen(0, '127.0.0.1');
     await once(server, 'listening');
     const port = server.address().port;
-    child = spawn(process.argv[2] ?? '.build/release/Notifier', ['--watch', '--server', `ws://127.0.0.1:${port}`],
+    child = spawn(process.argv[2] ?? '.build/release/falcon-notifier', ['--watch', '--server', `ws://127.0.0.1:${port}`],
         { stdio: ['ignore', 'pipe', 'inherit'] });
     child.on('error', error => { throw error; });
     const levels = [];

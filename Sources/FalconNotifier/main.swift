@@ -1,5 +1,5 @@
 import AppKit
-import NotifierCore
+import FalconNotifierCore
 
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
@@ -24,7 +24,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let reconnect = NSMenuItem(title: "Reconnect", action: #selector(reconnect), keyEquivalent: "r")
         reconnect.target = self
         menu.addItem(reconnect)
-        menu.addItem(NSMenuItem(title: "Quit Notifier", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+        menu.addItem(NSMenuItem(title: "Quit falcon-notifier", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
         item.menu = menu
         source.onChange = { [weak self] indicator in self?.render(indicator) }
         render(Indicator(level: .unavailable, summary: "Connecting to Codex…"))
@@ -67,7 +67,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 var arguments = Array(CommandLine.arguments.dropFirst())
 if arguments.contains("--help") {
     print("""
-    Usage: Notifier [--server ws://127.0.0.1:45999] [--once | --watch]
+    Usage: falcon-notifier [--server ws://127.0.0.1:45999] [--once | --watch]
       Default: menu bar app. --once prints a JSON status and exits; --watch streams changes.
       Server default: CODEX_APP_SERVER_URL, then ws://127.0.0.1:45999.
     """)

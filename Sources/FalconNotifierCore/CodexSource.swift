@@ -84,7 +84,7 @@ public final class CodexSource: StatusSource {
             }
         }
         _ = try await request("initialize", params: [
-            "clientInfo": ["name": "notifier", "title": "Notifier", "version": "0.1.0"],
+            "clientInfo": ["name": "falcon-notifier", "title": "falcon-notifier", "version": "0.1.0"],
             "capabilities": ["experimentalApi": true],
         ])
         try Task.checkCancellation()

@@ -2,11 +2,11 @@
 import PackageDescription
 
 let package = Package(
-    name: "Notifier",
+    name: "falcon-notifier",
     platforms: [.macOS(.v13)],
-    products: [.executable(name: "Notifier", targets: ["Notifier"])],
+    products: [.executable(name: "falcon-notifier", targets: ["FalconNotifier"])],
     targets: [
-        .target(name: "NotifierCore"),
-        .executableTarget(name: "Notifier", dependencies: ["NotifierCore"]),
+        .target(name: "FalconNotifierCore"),
+        .executableTarget(name: "FalconNotifier", dependencies: ["FalconNotifierCore"]),
     ]
 )
