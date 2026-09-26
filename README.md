@@ -17,6 +17,14 @@ Finished sessions waiting for your *next prompt* count as idle/green. Red means
 Codex has an outstanding approval or input request. Colors match `codex-status`'s
 Stream Deck implementation. Click the dot for counts, reconnect, and quit.
 
+While red or yellow, the entire menu bar also gets a matching translucent tint.
+The tint disappears when green or disconnected. It is click-through and cannot
+take keyboard focus, so menus and the status button still work. It follows display
+and Space changes, includes notched displays, and hides when macOS reports the
+menu bar hidden. With separate Spaces per display enabled, each display is tinted.
+This is a 32% opacity overlay, rather than a system theme change: macOS's existing
+text and icons remain visible through the color, and their appearance is tinted too.
+
 ## Build and run
 
 Requires macOS 13+ and Swift 6+ (Apple's Command Line Tools). Builds for the

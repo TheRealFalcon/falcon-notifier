@@ -6,6 +6,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let source: any StatusSource
     private let serverURL: URL
     private var statusItem: NSStatusItem?
+    private let menuBarTint = MenuBarTint()
     private let summaryItem = NSMenuItem(title: "Connecting to Codex…", action: nil, keyEquivalent: "")
 
     init(source: any StatusSource, serverURL: URL) {
@@ -30,7 +31,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         source.start()
     }
 
-    func applicationWillTerminate(_ notification: Notification) { source.stop() }
+    func applicationWillTerminate(_ notification: Notification) {
+        source.stop()
+        menuBarTint.setColor(nil)
+    }
 
     @objc private func reconnect() {
         source.stop()
@@ -46,6 +50,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         case .ready: color = NSColor(srgbRed: 105/255, green: 240/255, blue: 174/255, alpha: 1)
         case .unavailable: color = .systemGray
         }
+        menuBarTint.setColor(indicator.level == .attention || indicator.level == .busy ? color : nil)
         let symbol = NSImage(systemSymbolName: indicator.symbol, accessibilityDescription: indicator.summary)
             ?? NSImage(systemSymbolName: "circle.fill", accessibilityDescription: indicator.summary)!
         let image = symbol.withSymbolConfiguration(
