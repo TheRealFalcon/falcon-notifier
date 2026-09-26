@@ -95,7 +95,7 @@ updates and closures during a snapshot, missed notifications, and reconnection.
 `CodexSource` is a read-only WebSocket JSON-RPC client. It initializes a connection,
 enumerates `thread/loaded/list` with pagination, and reads each loaded thread's
 status without turns. It handles `thread/status/changed` immediately and
-reconciles every three seconds to discover sessions and recover missed events.
+reconciles every 30 seconds to discover sessions and recover missed events.
 New notifications take precedence over an in-flight snapshot. Requests time out
 after ten seconds; failed connections retry after five seconds. The server may
 retain idle threads after a terminal closes; these remain green.

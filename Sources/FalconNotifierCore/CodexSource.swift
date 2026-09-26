@@ -14,6 +14,7 @@ public final class CodexSource: StatusSource {
     private var socket: URLSessionWebSocketTask?
     private var runner: Task<Void, Never>?
     private var receiver: Task<Void, Never>?
+    private var pollDelay: Task<Void, Error>?
     private var pending: [Int: CheckedContinuation<Data, Error>] = [:]
     private var nextID = 0
     private var state = CodexState()
@@ -36,7 +37,11 @@ public final class CodexSource: StatusSource {
                     try await connect()
                     while !Task.isCancelled {
                         try await refresh()
-                        try await Task.sleep(for: .seconds(3))
+                        guard socket != nil else { throw RPCError(message: "Disconnected") }
+                        let delay = Task { try await Task.sleep(for: .seconds(30)) }
+                        pollDelay = delay
+                        try await delay.value
+                        pollDelay = nil
                     }
                 } catch {
                     if Task.isCancelled { break }
@@ -184,6 +189,8 @@ public final class CodexSource: StatusSource {
     }
 
     private func disconnect(_ error: Error) {
+        pollDelay?.cancel()
+        pollDelay = nil
         receiver?.cancel()
         receiver = nil
         socket?.cancel(with: .goingAway, reason: nil)

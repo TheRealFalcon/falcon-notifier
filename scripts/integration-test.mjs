@@ -12,7 +12,7 @@ let connectionCount = 0;
 let activeSocket;
 let child;
 let phase = 0;
-const timeout = setTimeout(() => { console.error('Integration test timed out'); cleanup(); process.exitCode = 1; }, 25000);
+const timeout = setTimeout(() => { console.error('Integration test timed out'); cleanup(); process.exitCode = 1; }, 45000);
 
 function cleanup() {
     clearTimeout(timeout);
