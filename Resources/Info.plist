@@ -3,11 +3,12 @@
 <plist version="1.0"><dict>
     <key>CFBundleIdentifier</key><string>com.falcon.falcon-notifier</string>
     <key>CFBundleName</key><string>falcon-notifier</string>
+    <key>CFBundleDisplayName</key><string>Falcon Notifier</string>
+    <key>CFBundleIconFile</key><string>AppIcon</string>
     <key>CFBundleExecutable</key><string>falcon-notifier</string>
     <key>CFBundlePackageType</key><string>APPL</string>
     <key>CFBundleShortVersionString</key><string>0.1.0</string>
     <key>CFBundleVersion</key><string>1</string>
     <key>LSMinimumSystemVersion</key><string>13.0</string>
-    <key>LSUIElement</key><true/>
     <key>NSHighResolutionCapable</key><true/>
 </dict></plist>

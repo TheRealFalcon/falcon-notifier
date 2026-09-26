@@ -1,6 +1,6 @@
 # falcon-notifier
 
-A small native macOS menu bar app. One compiled Swift executable, AppKit and
+A small native macOS Dock and menu bar app. One compiled Swift executable, AppKit and
 Foundation only, with no third-party dependencies or runtime scripts.
 
 The dot reflects **all loaded sessions** on your shared Codex app-server,
@@ -15,7 +15,10 @@ including child sessions:
 
 Finished sessions waiting for your *next prompt* count as idle/green. Red means
 Codex has an outstanding approval or input request. Click the dot for counts,
-reconnect, and quit.
+reconnect, and quit. The Dock icon opens a status window with a server address
+field and **Connect** button. Its badge shows `!` when input is needed, `…` while
+working, and `?` while disconnected; idle sessions have no badge. Right-click
+the Dock icon to show the window or reconnect.
 
 While red or yellow, the entire menu bar also gets a matching translucent tint.
 The tint disappears when green or disconnected. It is click-through and cannot
@@ -37,7 +40,9 @@ open dist/falcon-notifier.app
 
 The release app is self-contained; you can copy `dist/falcon-notifier.app` to
 `~/Applications`. For automatic startup, add that copy under System Settings →
-General → Login Items. There is no Dock icon or main window.
+General → Login Items. Launching the app opens its status window and connects
+automatically. Closing the window keeps the app running; click its Dock icon to
+reopen it, or use **Quit Falcon Notifier** (⌘Q) to stop it.
 
 ## Start the Codex server
 
@@ -69,12 +74,15 @@ unavailable, the dot is gray and the notifier retries automatically. Adding the
 notifier to Login Items starts only the notifier; start the server separately.
 Sessions on other servers or standalone CLI processes aren't visible here.
 
-To override the endpoint, pass `--server` or set `CODEX_APP_SERVER_URL` in the
-launching process's environment. A Finder launch doesn't inherit your shell's
-environment. For example:
+To change the endpoint, enter a WebSocket URL in the status window and click
+**Connect**. The app saves that address for future launches, including launches
+from Finder or the Dock. You can also pass `--server` or set
+`CODEX_APP_SERVER_URL` in the launching process's environment; these override the
+saved address (`--server` takes priority). A Finder launch doesn't inherit your
+shell's environment. To launch a fresh instance with an explicit address:
 
 ```sh
-open dist/falcon-notifier.app --args --server ws://127.0.0.1:45999
+open -n dist/falcon-notifier.app --args --server ws://127.0.0.1:45999
 ```
 
 ## Checks
@@ -85,7 +93,9 @@ dist/falcon-notifier.app/Contents/MacOS/falcon-notifier --once
 ```
 
 `--once` prints one JSON status and exits (nonzero when unavailable); `--watch`
-prints changes. The integration test needs Node 18+ only for its local fixture,
+prints changes. These terminal modes do not show a Dock icon or window and ignore
+the saved GUI address; use `--server` or `CODEX_APP_SERVER_URL` to override their
+default endpoint. The integration test needs Node 18+ only for its local fixture,
 and tests the compiled release executable without touching real Codex sessions.
 It covers both approval and input waits, priority across sessions, pagination,
 updates and closures during a snapshot, missed notifications, and reconnection.
